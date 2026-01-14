@@ -1,35 +1,37 @@
- ## FoodiFy – Online Food Delivery Platform
+# Bhojanam – Online Food Ordering Platform
 
-FoodiFy is a full-stack online food delivery application developed using the MERN stack (MongoDB, Express.js, React.js, and Node.js).
-The platform delivers a smooth and user-friendly experience, enabling customers to explore menus, place orders efficiently, and track deliveries in real time.
+Bhojanam is a full-stack web application that allows users to order food online with ease and convenience.
+Built using the MERN stack, the platform offers smooth food browsing, secure order placement, and real-time order tracking, along with admin-level management features.
 
-## Key Features
+# Features
 
-*Secure user authentication and profile management
+Secure user authentication and profile management
 
-*Browse food items by category or search by name
+Browse food items by category or search by name
 
-*Add items to the cart and place orders seamlessly
+Add items to cart and place orders seamlessly
 
-*Real-time order status and tracking
+# Real-time order status updates
 
-*Admin dashboard for managing food items, orders, and users
+Admin dashboard for managing food items, orders, and users
 
-*Fully responsive design optimized for both desktop and mobile devices
+Fully responsive design for desktop and mobile devices
 
-### Technology Stack
-## Frontend
+# Tech Stack
+# Frontend
 
-*React.js – For building a dynamic and interactive user interface
+React.js – For building interactive user interfaces
 
-*Context API (storeContext) – State management across the application
+Context API – Centralized state management
 
-*CSS – Responsive styling and layout design
+CSS – Responsive and clean UI styling
 
-## Backend
-*Node.js – JavaScript runtime for server-side development
-*Express.js – Framework for creating RESTful APIs
+# Backend
 
-### Database
+Node.js – Server-side JavaScript runtime
 
-*MongoDB – NoSQL database for storing user information, food items, and order details
+Express.js – RESTful API framework
+
+# Database
+
+MongoDB – NoSQL database for storing users, food items, and order data
