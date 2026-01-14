@@ -1,0 +1,126 @@
+.cart{
+margin-top: 80px;
+}
+.cart-items-title{
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 0.5fr;
+    align-items: center;
+    color: rgb(112, 112, 112);
+    
+}
+.cart-items-title .cartTable{
+    color: black;
+}
+
+.cart-items-item{
+   margin: 10px 0px;
+}
+.cart-items-item img{
+    height: 60px;
+    width: 60px;
+}
+.cart-items-item .remove{
+    cursor: pointer;
+    transition: 0.3s;
+}
+.cart-details hr{
+height: 1px;
+border: none;
+background-color: rgb(207, 207, 207);
+
+}
+.cart-bottom{
+   margin-top: 80px;
+   display: flex;
+   justify-content: space-between;
+   gap: max(12vw,2px); 
+}
+.cart-total{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+}
+.cart-total-details{
+    display: flex;
+    justify-content: space-between;
+    color: rgb(112, 111, 111);
+    text-align: center;
+}
+.cart-total-details b{
+    color: black;
+}
+.cart-total button{
+    height: 30px;
+    border: none;
+    width: max(15vw,200px);
+    background-color: orangered;
+    color: white;
+    border-radius: 5px;
+    box-shadow:0px 0px 15px rgb(216, 214, 214);
+    cursor: pointer;
+}
+.cart-total button:active{
+    background-color: rgb(173, 86, 54);
+    font-weight: 100;
+}
+.cart .promocode{
+    flex: 1;
+}
+.promocode .input-promocode{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(221, 220, 220);
+    border-radius: 4px;
+    
+}
+.promocode .input-promocode input,button{
+    height: 30px;
+    font-size: 16px;
+    border-radius: 4px;
+   
+}
+.promocode .input-promocode input{
+    background: transparent;
+    border: none;
+    outline: none;
+    padding-left: 10px;
+    color: rgb(116, 114, 114);
+ 
+}
+.promocode .input-promocode button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: max(10vw,100px);
+    background-color: black;
+    padding:12px 5px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    
+}
+.promocode .input-promocode button:active{
+    background-color: rgb(121, 120, 120);
+    color: rgb(65, 64, 64);
+}
+.promocode div p{
+    font-size: 19px;
+    margin-bottom: 20px;
+    color: rgb(110, 110, 110);
+}
+@media (max-width:750px){
+  .cart-bottom{
+    flex-direction: column-reverse;
+
+  }
+  .promocode{
+    justify-content: start;
+  }
+  
+ 
+}

@@ -1,0 +1,140 @@
+/* Overlay */
+.loginPage-Container {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Card */
+.loginPage {
+    background: #ffffff;
+    width: 380px;
+    max-width: 92%;
+    border-radius: 14px;
+    padding: 25px 22px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: popup 0.3s ease;
+}
+
+@keyframes popup {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Title */
+.loginPage-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.loginPage-title h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1e1e2f;
+}
+
+.loginPage-title img {
+    width: 16px;
+    cursor: pointer;
+}
+
+/* Form */
+.signin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Inputs */
+.signin-form input {
+    height: 44px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid #d6d6d6;
+    font-size: 15px;
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+.signin-form input:focus {
+    border-color: #ff5722;
+    box-shadow: 0 0 0 3px rgba(255,87,34,0.15);
+}
+
+/* Password Row */
+.password-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.forgot-Password a {
+    font-size: 13px;
+    color: #ff5722;
+    text-decoration: none;
+    align-self: flex-end;
+}
+
+.forgot-Password a:hover {
+    text-decoration: underline;
+}
+
+/* Button */
+.signin-form button {
+    height: 46px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, orangered, #ff7043);
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.signin-form button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(255,87,34,0.35);
+}
+
+/* Footer Text */
+.signin-form .p {
+    font-size: 14px;
+    color: #444;
+    text-align: center;
+}
+
+.Signup-Login {
+    color: #ff5722;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.Signup-Login:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .loginPage {
+        padding: 20px 16px;
+    }
+
+    .loginPage-title h2 {
+        font-size: 20px;
+    }
+}

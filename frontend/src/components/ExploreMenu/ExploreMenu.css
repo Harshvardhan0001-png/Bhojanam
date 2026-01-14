@@ -1,0 +1,104 @@
+.explore-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 40px 0;
+}
+
+/* Heading */
+.explore-menu h1 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #1e1e2f;
+}
+
+/* Description */
+.explore-menu-text {
+    max-width: 65%;
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Category List */
+.explore-menu-list {
+    display: flex;
+    gap: 28px;
+    margin: 25px 0;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.explore-menu-list::-webkit-scrollbar {
+    height: 6px;
+}
+
+.explore-menu-list::-webkit-scrollbar-thumb {
+    background: #ddd;
+    border-radius: 10px;
+}
+
+/* Item Card */
+.explore-menu-list-item {
+    min-width: 120px;
+    background: white;
+    border-radius: 16px;
+    padding: 18px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.explore-menu-list-item:hover {
+    transform: translateY(-6px);
+}
+
+/* Image */
+.explore-menu-list-item img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    transition: 0.3s;
+}
+
+/* Active Category */
+.explore-menu-list-item img.active {
+    border: 3px solid orangered;
+    padding: 2px;
+    box-shadow: 0 0 0 4px rgba(255, 87, 34, 0.2);
+}
+
+/* Text */
+.explore-menu-list-item p {
+    font-size: 15px;
+    font-weight: 500;
+    color: #444;
+}
+
+/* Divider */
+.explore-menu hr {
+    margin-top: 25px;
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #ddd, transparent);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .explore-menu h1 {
+        font-size: 26px;
+    }
+
+    .explore-menu-text {
+        max-width: 100%;
+        font-size: 14px;
+    }
+
+    .explore-menu-list-item {
+        min-width: 100px;
+        padding: 14px 10px;
+    }
+}

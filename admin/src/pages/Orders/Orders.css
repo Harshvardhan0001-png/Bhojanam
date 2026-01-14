@@ -1,0 +1,40 @@
+.order-item{
+ display: grid;
+ grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr;
+ border: 1px solid orangered;
+ padding: 20px;
+ align-items: start;
+ margin: 20px 0px;
+
+ gap: 15px;
+
+}
+.order-item .order-item-name{
+   margin-top: 15px;
+   margin-bottom: 30px;
+   font-weight: 700;
+}
+.order-item-name, .order-item-address{
+    
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
+}
+.order-item select{
+    height: 30px;
+    background-color: rgb(250, 181, 156);
+    width: max(10vw,120px);
+    font-size: 14px;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+@media (max-width:750px){
+    .order-item{
+        font-size: 15px;
+    
+        grid-template-columns: 1fr;
+       
+    }
+}
+
