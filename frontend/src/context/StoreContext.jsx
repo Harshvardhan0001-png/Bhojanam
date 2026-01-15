@@ -5,7 +5,7 @@ import axios from 'axios'
 export const StoreContext = createContext(null); //creating a container name StoreContext
 const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
-  const url = "https://bhojanam-backend.onrender.com"
+  const url = "https://bhojanam-backend2.onrender.com"
   const [token,setToken] = useState("");
   const [food_list,setFoodList] = useState([]);
 
