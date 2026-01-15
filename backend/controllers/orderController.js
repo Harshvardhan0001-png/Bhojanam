@@ -1,9 +1,11 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
-import paypal from "@paypal/checkout-server-sdk"; // i have commented this
+import paypal from "@paypal/checkout-server-sdk";
 import "dotenv/config";
 
-// Configure PayPal client
+/* =======================
+   PAYPAL CONFIG
+======================= */
 const environment = new paypal.core.SandboxEnvironment(
   process.env.PAYPAL_CLIENT_ID,
   process.env.PAYPAL_SECRET
@@ -11,148 +13,138 @@ const environment = new paypal.core.SandboxEnvironment(
 
 const paypalClient = new paypal.core.PayPalHttpClient(environment);
 
-// Placing user order from the frontend
+/* =======================
+   PLACE ORDER
+======================= */
 const placeOrder = async (req, res) => {
-    // frontend_url
-  console.log(req.body,"inplaceorder ordercontroller");
   try {
-    // Create a new order in the database
+    // Save order in DB
     const newOrder = new orderModel({
       userId: req.body.userId,
       items: req.body.items,
       amount: req.body.amount,
       address: req.body.address,
-      
+      payment: false,
     });
+
     await newOrder.save();
     await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
 
-    // Prepare PayPal purchase units
-    const purchase_units = [
-      {
-        amount: {
-          currency_code: "USD",
-          value: req.body.amount, // Total amount
-          breakdown: {
-            item_total: {
-              currency_code: "USD",
-              value: req.body.items.reduce(
-                (sum, item) => sum + item.price * item.quantity,
-                0
-              ),
-            },
-            shipping: {
-              currency_code: "USD",
-              value: "4.00", // Delivery charges
-            },
+    // PayPal order create
+    const request = new paypal.orders.OrdersCreateRequest();
+    request.prefer("return=representation");
+
+    request.requestBody({
+      intent: "CAPTURE",
+      purchase_units: [
+        {
+          amount: {
+            currency_code: "USD",
+            value: req.body.amount.toFixed(2),
           },
         },
-        items: req.body.items.map((item) => ({
-          name: item.name,
-          quantity: item.quantity.toString(),
-          unit_amount: {
-            currency_code: "USD",
-            value: item.price,
-          },
-        })),
-      },
-    ];
-    console.log(purchase_units,"hi i am purchase units");////
-
-    // Create a PayPal order request
-    const request = new paypal.orders.OrdersCreateRequest();
-    request.body = {
-      intent: "CAPTURE",
-      purchase_units:purchase_units, // This should contain your purchase data, such as amount and items
+      ],
       application_context: {
-        return_url: `${process.env.FRONTEND_URL}/verify?success=true&orderId=${newOrder._id}`,
-        cancel_url: `${process.env.FRONTEND_URL}/verify?success=false&orderId=${newOrder._id}`,
+        return_url: `${process.env.BACKEND_URL}/api/order/verify?orderId=${newOrder._id}`,
+        cancel_url: `${process.env.BACKEND_URL}/api/order/cancel?orderId=${newOrder._id}`,
       },
-    };
+    });
 
     const order = await paypalClient.execute(request);
-    console.log(JSON.stringify(order, null, 2));
 
     const approvalUrl = order.result.links.find(
       (link) => link.rel === "approve"
     );
-    console.log(approvalUrl);
 
-    if (approvalUrl) {
-      res.json({
-        success: true,
-        approval_url: approvalUrl.href,
-      });
-    } else {
-      res.status(500).json({
-        success: false,
-        message: "Approval URL not found in PayPal response",
-      });
+    if (!approvalUrl) {
+      return res.status(500).json({ success: false });
     }
+
+    res.json({
+      success: true,
+      approval_url: approvalUrl.href,
+    });
+
   } catch (error) {
-    console.log(error,"yu");
-    res.json({ success: false, message: "error" });
+    console.log(error);
+    res.status(500).json({ success: false });
   }
 };
 
-// Temporary verification method for orders (using PayPal capture API)
-
-
+/* =======================
+   VERIFY PAYMENT (PAYPAL CALLBACK)
+======================= */
 const verifyOrder = async (req, res) => {
-    
-      const { orderId, success } = req.body;
-      try {
-        if(success==="true"){
-            await orderModel.findByIdAndUpdate(orderId,{payment:true});
-            res.json({success:true,message:"Paid"})
-        }else{
-            await orderModel.findByIdAndDelete(orderId);
-            res.json({success:false,message:"Not Paid"})
-        }
-      } catch (error) {
-        console.log(error);
-        res.json({success:false,message:"error"})
-      }
+  const { token, orderId } = req.query;
 
-}
+  try {
+    // Capture PayPal payment
+    const request = new paypal.orders.OrdersCaptureRequest(token);
+    request.requestBody({});
+    await paypalClient.execute(request);
 
+    await orderModel.findByIdAndUpdate(orderId, { payment: true });
 
+    res.redirect(`${process.env.FRONTEND_URL}/order-success`);
+  } catch (error) {
+    console.log(error);
+    res.redirect(`${process.env.FRONTEND_URL}/order-failed`);
+  }
+};
 
-// Fetch user orders for the frontend
+/* =======================
+   CANCEL PAYMENT
+======================= */
+const cancelOrder = async (req, res) => {
+  const { orderId } = req.query;
+
+  await orderModel.findByIdAndDelete(orderId);
+  res.redirect(`${process.env.FRONTEND_URL}/cart`);
+};
+
+/* =======================
+   USER ORDERS
+======================= */
 const userOrders = async (req, res) => {
   try {
     const orders = await orderModel.find({ userId: req.body.userId });
     res.json({ success: true, data: orders });
   } catch (error) {
-    console.error("Error fetching orders:", error);
-    res.json({ success: false, message: "Error fetching orders" });
+    res.json({ success: false });
   }
 };
 
-// List all orders (admin function)
+/* =======================
+   ADMIN: LIST ORDERS
+======================= */
 const listOrders = async (req, res) => {
   try {
     const orders = await orderModel.find({});
     res.json({ success: true, data: orders });
   } catch (error) {
-    console.log("Error fetching all orders:", error);
-    res.json({ success: false, message: "Error" });
+    res.json({ success: false });
   }
 };
 
-// Update order status (admin function)
+/* =======================
+   ADMIN: UPDATE STATUS
+======================= */
 const updateStatus = async (req, res) => {
   try {
     await orderModel.findByIdAndUpdate(req.body.orderId, {
       status: req.body.status,
     });
-    res.json({ success: true, status: "Status Updated" });
+    res.json({ success: true });
   } catch (error) {
-    console.log("Error updating status:", error);
-    res.json({ success: false, message: "Error" });
+    res.json({ success: false });
   }
 };
 
-export { placeOrder, verifyOrder, userOrders, listOrders, updateStatus };
-
-
+export {
+  placeOrder,
+  verifyOrder,
+  cancelOrder,
+  userOrders,
+  listOrders,
+  updateStatus,
+};
