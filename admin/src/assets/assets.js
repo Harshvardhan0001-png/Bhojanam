@@ -16,4 +16,4 @@ export const assets ={
     
 }
 
-export const url = 'https://localhost:4000'
+export const url = 'https://bhojanam-backend3.onrender.com'
